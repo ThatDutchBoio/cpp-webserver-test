@@ -1,54 +1,57 @@
 #include <vector>
+#include <string>
 #include <arpa/inet.h>
 
 struct RequestHeaders {
-    char Accept[32];
-    char UserAgent[64];
-    char Authorization[128];
-    char ContentType[32];
-    char Cookie[32];
+    std::string Accept;
+    std::string UserAgent;
+    std::string Authorization;
+    std::string ContentType;
+    std::string Cookie;
 };
 
-class Request{
-    public:
+class Request {
+public:
     int RequestMethod;
-    char Path[256];
+    std::string Path;
     sockaddr_in Source_Address;
-    char body[1024];
-
+    std::string body;
 };
 
-namespace RequestHelper{
-    typedef std::vector<std::vector<char>> requestInfo;
+namespace RequestHelper {
+    typedef std::vector<std::vector<std::string>> requestInfo;
 
-    requestInfo ParseRequest(char buffer[1024]){
-        std::vector<std::vector<char>> request;
-        std::vector<char> line;
-        for (int i = 0; i < 1024; i++){
-            if (buffer[i] == '\n'){
+    requestInfo ParseRequest(const std::string& buffer) {
+        std::vector<std::vector<std::string>> request;
+        std::vector<std::string> line;
+        std::string currentLine;
+        for (char ch : buffer) {
+            if (ch == '\n') {
+                line.push_back(currentLine);
                 request.push_back(line);
                 line.clear();
+                currentLine.clear();
             } else {
-                line.push_back(buffer[i]);
+                currentLine += ch;
             }
         }
         return request;
     }
-   requestInfo ParseRequestType(std::vector<char> buffer){
-         std::vector<std::vector<char>> requestType;
-         std::vector<char> line;
-         for (int i = 0; i < 1024; i++){
-              if (buffer[i] == ' '){
+
+    requestInfo ParseRequestType(const std::string& buffer) {
+        std::vector<std::vector<std::string>> requestType;
+        std::vector<std::string> line;
+        std::string currentWord;
+        for (char ch : buffer) {
+            if (ch == ' ') {
+                line.push_back(currentWord);
                 requestType.push_back(line);
                 line.clear();
-              } else {
-                line.push_back(buffer[i]);
-              }
-         }
+                currentWord.clear();
+            } else {
+                currentWord += ch;
+            }
+        }
         return requestType;
-   }
-
-   
-
+    }
 }
-
