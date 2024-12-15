@@ -16,6 +16,7 @@ namespace StringUtils{
                 int subStrLength = strlen(substring);
                 std::cout << subStrLength << std::endl;
                 for (int j = 0; j < subStrLength; j++){
+                    if (i+j > strLength) return false;
                     std::cout << string[i+j] << " " << substring[j] << std::endl;
                     if (string[i+j] != substring[j]){
                         found = false;

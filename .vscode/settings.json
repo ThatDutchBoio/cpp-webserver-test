@@ -61,7 +61,8 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
-        "csignal": "cpp"
+        "csignal": "cpp",
+        "cinttypes": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

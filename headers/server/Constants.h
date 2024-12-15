@@ -5,7 +5,11 @@ namespace Constants {
 } 
 
 namespace Enums{
-    int HTTP_GET = 0;
-    int HTTP_POST = 1;
-    int HTTP_PUT = 2;
+    typedef char HTTP_STATUS[8];
+    
+    int HTTP_G = 0;
+    int HTTP_P = 1;
+    int HTTP_PU = 2;
+    HTTP_STATUS HTTP_OK = "200 OK";
+
 }

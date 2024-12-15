@@ -14,19 +14,19 @@
 sockaddr_in ServerAddr = createServerAddress(8080, "87.106.130.229");
 Server App(ServerAddr);
 
-void handle_signal(int signal) {
+void handle_signal(int signal)
+{
+    std::cout << "Handling signal!!" << std::endl;
     App.Stop();
 }
 
-int main() {
-
-    
+int main()
+{
 
     // signal(SIGTERM, handle_signal);
-    // signal(SIGABRT, handle_signal);
-    
-    int Server_Socket = App.GetSocketId();
+    signal(SIGABRT, handle_signal);
 
+    int Server_Socket = App.GetSocketId();
 
     App.Start();
     // std::cout << "Starting server..." << std::endl;
@@ -80,14 +80,14 @@ int main() {
     //     std::cout << "Request path: " << requestInfo[1].data() << std::endl;
     //     std::cout << "Request type: " << requestInfo[0].data() << std::endl;
     //     bool isGet = StringUtils::Contains(requestInfo[0].data(), Constants::HTTP_GET);
-    //     std::cout << "is GET?: " << isGet << std::endl; 
+    //     std::cout << "is GET?: " << isGet << std::endl;
     //     char response[] =
     //         "HTTP/1.1 200 OK\r\n"
     //         "Content-Type: text/plain\r\n"
     //         "Content-Length: 12\r\n"
     //         "\r\n"
     //         "Testing!";
-
+    // https://open.spotify.com/track/3DVjSnt1HId4Qb8oL5Mjs8?si=6992d77e438d4b03
     //     ssize_t bytes_sent = 0, total = sizeof(response) - 1;
     //     while (bytes_sent < total) {
     //         ssize_t bytes = send(client_sock, response + bytes_sent, total - bytes_sent, 0);
@@ -105,5 +105,4 @@ int main() {
     // }
 
     // close(newSocket);
-
 }

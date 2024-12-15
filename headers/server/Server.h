@@ -6,7 +6,8 @@
 #include "./Request.h"
 #include "./Response.h"
 #include <iostream>
-#include "./Constants.h"
+#include "./StringUtils.h"
+// #include "./Constants.h"
 
 typedef void (*callback_function)(void);
 
@@ -24,7 +25,7 @@ class Server{
         void HandleSignal(int signal);
         void HandleClient(int client_sock);
         void Get(char Path[256], callback_function func);
-        void ProcessRequest(sockaddr_in Source, char buffer[1024]);
+        void ProcessRequest(sockaddr_in Source, char buffer[1024], int client_sock);
         int GetSocketId();
     private:
         int server_sock = -1;
@@ -53,6 +54,9 @@ Server::~Server(){
 
 void Server::Stop(){
     std::cout << "Terminating server" << std::endl;
+    for (int i = 0; i <= 3; i++) {
+        close(i);
+    }
     this->running = false;
     if (server_sock >= 0) {
         close(server_sock);
@@ -101,18 +105,28 @@ void Server::Start(){
 
         char buffer[1024];
         ssize_t bytes_received = recv(client_sock, buffer, sizeof(buffer),0);
-        this->ProcessRequest(CLIENT_ADDRESS, buffer);
+        this->ProcessRequest(CLIENT_ADDRESS, buffer, client_sock);
     }
     
 }
 
-void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, char buffer[1024]){
+void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, char buffer[1024], int client_sock){
     RequestHelper::requestInfo Parsed = RequestHelper::ParseRequest(buffer);
     RequestHelper::requestInfo requestInfo = RequestHelper::ParseRequestType(Parsed[0]);
+
     std::cout << "Request path: " << requestInfo[1].data() << std::endl;
     std::cout << "Request type: " << requestInfo[0].data() << std::endl;
-    std::cout << buffer << std::endl;
-
+    // std::cout << buffer << std::endl;
+    
+    char toCheck[] = "/terminate";
+    if (StringUtils::Contains(requestInfo[1].data(), toCheck)) {
+        this->Stop();
+    }
+    Response r(this->server_sock, client_sock);
+    r.SetStatus(Enums::HTTP_OK);
+    char body[] = "testing123";
+    r.SetBody(body);
+    r.Send();
 
 
 }
