@@ -8,6 +8,7 @@
 #include <vector>
 #include "./headers/server/Server.h"
 #include "./headers/server/IPv4.h"
+#include "./headers/server/FileParser.h"
 
 // int server_sock = -1;
 // bool running = true;
@@ -22,7 +23,6 @@ void handle_signal(int signal)
 
 int main()
 {
-
     // signal(SIGTERM, handle_signal);
     signal(SIGABRT, handle_signal);
 
@@ -31,8 +31,8 @@ int main()
     App.Get("/", [](Request Req, Response Res){
         std::cout << "app.get('/'')" << std::endl;
         Res.SetStatus(Enums::HTTP_OK);
-        Res.SetContentType(Enums::TEXT_HTML);
-        Res.SetBody("<h1>testing</h1>");
+        Res.SetContentType(Enums::TEXT_PLAIN);
+        Res.SetBody(FileParser::GetHTMLPage("./index.html"));
         Res.Send();
     });
 
