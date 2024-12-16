@@ -3,15 +3,14 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <cstring>
 #include <csignal>
 #include <vector>
-#include "./headers/server/Server.h"
-#include "./headers/server/IPv4.h"
-#include "./headers/server/FileParser.h"
+#include "include/server/server.h"
+#include "include/server/ipv4.h"
+#include "include/server/file_parser.h"
+#include "include/server/router.h"
+#include "include/server/constants.h"
 
-// int server_sock = -1;
-// bool running = true;
 sockaddr_in ServerAddr = createServerAddress(8080, "87.106.130.229");
 Server App(ServerAddr);
 
@@ -23,7 +22,6 @@ void handle_signal(int signal)
 
 int main()
 {
-    // signal(SIGTERM, handle_signal);
     signal(SIGABRT, handle_signal);
 
     int Server_Socket = App.GetSocketId();
@@ -43,7 +41,5 @@ int main()
         Res.Send();
     });
 
-    
     App.Start();
-
 }

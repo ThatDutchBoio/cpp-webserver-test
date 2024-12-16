@@ -1,39 +1,5 @@
-#include <vector>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <iostream>
-#include <string>
-#include "./Request.h"
-#include "./Response.h"
-#include "./StringUtils.h"
-
-
-typedef void (*callback_function)(Request, Response);
-
-struct Listener {
-    callback_function Callback;
-    std::string Path;
-};
-
-class Server {
-public:
-    Server(sockaddr_in serverAddr);
-    ~Server();
-    void Start();
-    void Stop();
-    void HandleSignal(int signal);
-    void HandleClient(int client_sock);
-    void Get(const std::string& Path, callback_function func);
-    void ProcessRequest(sockaddr_in Source, const std::string& buffer, int client_sock);
-    int GetSocketId();
-private:
-    int server_sock = -1;
-    bool running = true;
-    sockaddr_in serverAddr;
-    std::vector<Listener> listeners;
-};
+#include "../../include/server/server.h"
+#include "../../include/server/request.h"
 
 void Server::Get(const std::string& Path, callback_function func) {
     Listener nListener;
@@ -96,19 +62,22 @@ void Server::Start() {
         struct sockaddr_in CLIENT_ADDRESS;
         socklen_t clientSize = sizeof(CLIENT_ADDRESS);
         int client_sock = accept(newSocket, (struct sockaddr*)&CLIENT_ADDRESS, &clientSize);
-
         if (client_sock < 0) {
             perror("Accept failed");
             continue;
         }
-
-        char buffer[1024];
-        ssize_t bytes_received = recv(client_sock, buffer, sizeof(buffer), 0);
-        std::string request(buffer, bytes_received);
+        char buffer[1024] = {0}; // Initialize buffer to zero
+        ssize_t bytes_received = recv(client_sock, buffer, sizeof(buffer) - 1, 0); // Ensure null-termination
+        if (bytes_received < 0) {
+            perror("Receive failed");
+            close(client_sock);
+            continue;
+        }
+        buffer[bytes_received] = '\0'; // Null-terminate the received data
+        std::string request(buffer);
         this->ProcessRequest(CLIENT_ADDRESS, request, client_sock);
     }
 }
-
 
 void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffer, int client_sock) {
     RequestHelper::requestInfo Parsed = RequestHelper::ParseRequest(buffer);
@@ -124,17 +93,9 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
     if (StringUtils::Contains(requestInfo[1][0], toCheck)) {
         this->Stop();
     }
-    for( Listener l : this->listeners) {
-        std::cout << "l.path: ";
-        std::cout << l.Path << std::endl;
-        std::cout << "requestIfo[1][0]" << requestInfo[1][0] << std::endl;
+    for (Listener l : this->listeners) {
         if (l.Path == requestInfo[1][0]) {
             l.Callback(Req, Res);
         }
     }
-    // Response r(this->server_sock, client_sock);
-    // r.SetStatus(Enums::HTTP_OK);
-    // char body[] = "<h1>balls</h1>";
-    // r.SetBody(body);
-    // r.Send();
 }
