@@ -31,7 +31,7 @@ int main()
     App.Get("/", [](Request Req, Response Res){
         std::cout << "app.get('/'')" << std::endl;
         Res.SetStatus(Enums::HTTP_OK);
-        Res.SetContentType(Enums::TEXT_PLAIN);
+        Res.SetContentType(Enums::TEXT_HTML);
         Res.SetBody(FileParser::GetHTMLPage("./index.html"));
         Res.Send();
     });
