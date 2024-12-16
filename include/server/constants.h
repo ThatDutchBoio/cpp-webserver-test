@@ -45,4 +45,10 @@ namespace Enums {
     const CONTENT_TYPE TEXT_JSON = "application/json";
 
     const HTTP_STATUS HTTP_OK = "200 OK";
+
+    typedef int HTTP_METHOD;
+
+    const HTTP_METHOD HTTP_GET = 0;
+    const HTTP_METHOD HTTP_POST = 1;
+    const HTTP_METHOD HTTP_PUT = 2;
 }

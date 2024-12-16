@@ -1,5 +1,7 @@
 #include "../../include/server/server.h"
 #include "../../include/server/request.h"
+#include "../../include/server/router.h"
+#include "../../include/server/constants.h"
 
 /**
  * @brief Registers a callback function for a specific HTTP GET request path.
@@ -11,6 +13,7 @@ void Server::Get(const std::string& Path, callback_function func) {
     Listener nListener;
     nListener.Callback = func;
     nListener.Path = Path;
+    nListener.Method = Enums::HTTP_GET;
     this->listeners.push_back(nListener);
 }
 
@@ -158,8 +161,29 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
         this->Stop();
     }
     for (Listener l : this->listeners) {
+        std::cout << "l.path: " << l.Path << std::endl << "request Path: " << requestInfo[1][0] << std::endl;
         if (l.Path == requestInfo[1][0]) {
             l.Callback(Req, Res);
         }
     }
+}
+
+/**
+ * @brief Registers a router's listeners to the server and clears the router's listeners.
+ * 
+ * This function iterates through all listeners in the provided router and adds them to the server's list of listeners.
+ * After transferring the listeners, it clears the router's list of listeners.
+ * 
+ * @param Path The base path for the router (currently unused in the function).
+ * @param R The router containing listeners to be registered with the server.
+ */
+void Server::Use(std::string Path, Router R){
+    for (Listener l : R.Listeners) {
+        Listener nListener;
+        nListener.Callback = l.Callback;
+        nListener.Method = l.Method;
+        nListener.Path = Path + l.Path;
+        this->listeners.push_back(nListener);
+    }
+    R.Listeners.clear();
 }

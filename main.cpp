@@ -10,6 +10,7 @@
 #include "include/server/file_parser.h"
 #include "include/server/router.h"
 #include "include/server/constants.h"
+#include "src/api/testing.cpp"
 
 sockaddr_in ServerAddr = createServerAddress(8080, "87.106.130.229");
 Server App(ServerAddr);
@@ -23,8 +24,6 @@ void handle_signal(int signal)
 int main()
 {
     signal(SIGABRT, handle_signal);
-
-    
 
     App.Get("/", [](Request Req, Response Res){
         std::cout << "app.get('/'')" << std::endl;
@@ -41,5 +40,8 @@ int main()
         Res.Send();
     });
 
+    Router TestRouter = TestingApi::GetRouter();
+
+    App.Use("/testing", TestRouter);
     App.Start();
 }

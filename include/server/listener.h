@@ -2,6 +2,7 @@
 #include <string>
 #include "./request.h"
 #include "./response.h"
+#include "constants.h"
 
 typedef void (*callback_function)(Request, Response);
 
@@ -22,4 +23,5 @@ typedef void (*callback_function)(Request, Response);
 struct Listener {
     callback_function Callback;
     std::string Path;
+    Enums::HTTP_METHOD Method;
 };
