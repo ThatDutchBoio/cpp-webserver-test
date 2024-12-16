@@ -24,7 +24,7 @@ int main()
 {
     signal(SIGABRT, handle_signal);
 
-    int Server_Socket = App.GetSocketId();
+    
 
     App.Get("/", [](Request Req, Response Res){
         std::cout << "app.get('/'')" << std::endl;

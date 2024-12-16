@@ -1,6 +1,12 @@
 #include "../../include/server/server.h"
 #include "../../include/server/request.h"
 
+/**
+ * @brief Registers a callback function for a specific HTTP GET request path.
+ * 
+ * @param Path The URL path to listen for GET requests.
+ * @param func The callback function to be invoked when a GET request is received for the specified path.
+ */
 void Server::Get(const std::string& Path, callback_function func) {
     Listener nListener;
     nListener.Callback = func;
@@ -8,16 +14,37 @@ void Server::Get(const std::string& Path, callback_function func) {
     this->listeners.push_back(nListener);
 }
 
+/**
+ * @brief Constructs a new Server object with the specified server address.
+ * 
+ * @param serverAddr The sockaddr_in structure containing the server address.
+ */
 Server::Server(sockaddr_in serverAddr) {
     this->serverAddr = serverAddr;
 }
 
+/**
+ * @brief Destructor for the Server class.
+ *
+ * This destructor closes the server socket if it is open (i.e., if the socket
+ * file descriptor is greater than or equal to 0). This ensures that any
+ * resources associated with the server socket are properly released when
+ * the Server object is destroyed.
+ */
 Server::~Server() {
     if (server_sock >= 0) {
         close(server_sock);
     }
 }
 
+/**
+ * @brief Stops the server and closes all open file descriptors.
+ * 
+ * This function terminates the server by setting the running flag to false
+ * and closing the server socket if it is open. It also closes the first four
+ * file descriptors (0, 1, 2, 3) which are typically standard input, output,
+ * error, and an additional descriptor.
+ */
 void Server::Stop() {
     std::cout << "Terminating server" << std::endl;
     for (int i = 0; i <= 3; i++) {
@@ -33,6 +60,31 @@ int Server::GetSocketId() {
     return this->server_sock;
 }
 
+/**
+ * @brief Starts the server to listen for incoming connections.
+ * 
+ * This function creates a socket, binds it to the specified address and port,
+ * and starts listening for incoming connections. It enters a loop where it
+ * accepts client connections and processes their requests.
+ * 
+ * @details
+ * - Creates a socket using the `socket` function.
+ * - Binds the socket to the server address using the `bind` function.
+ * - Listens for incoming connections using the `listen` function.
+ * - Enters a loop to accept and handle client connections.
+ * - For each client connection:
+ *   - Accepts the connection using the `accept` function.
+ *   - Receives data from the client using the `recv` function.
+ *   - Processes the client's request by calling `ProcessRequest`.
+ * 
+ * @note If any of the socket operations (creation, binding, listening, accepting, receiving) fail,
+ *       an error message is printed using `perror`, and the server stops or continues based on the context.
+ * 
+ * @warning This function runs in an infinite loop until `this->running` is set to false.
+ * 
+ * @see Server::Stop
+ * @see Server::ProcessRequest
+ */
 void Server::Start() {
     int newSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (newSocket < 0) {
@@ -79,6 +131,18 @@ void Server::Start() {
     }
 }
 
+/**
+ * @brief Processes an incoming client request.
+ * 
+ * This function parses the incoming request, logs the request path and type,
+ * and checks if the request path matches any registered listeners. If a match
+ * is found, the corresponding callback is invoked. Additionally, if the request
+ * path matches the termination path ("/terminate"), the server is stopped.
+ * 
+ * @param CLIENT_ADDRESS The address of the client making the request.
+ * @param buffer The raw request data received from the client.
+ * @param client_sock The socket file descriptor for the client connection.
+ */
 void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffer, int client_sock) {
     RequestHelper::requestInfo Parsed = RequestHelper::ParseRequest(buffer);
     RequestHelper::requestInfo requestInfo = RequestHelper::ParseRequestType(Parsed[0][0]);

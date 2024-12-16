@@ -8,6 +8,22 @@
 
 
 
+/**
+ * @class FileParser
+ * @brief A class responsible for parsing files.
+ *
+ * This class provides static methods to parse and retrieve content from files.
+ */
+
+/**
+ * @brief Retrieves the content of an HTML page from the specified file path.
+ *
+ * This static method reads the content of the file located at the given path
+ * and returns it as a string.
+ *
+ * @param path The file path to the HTML page.
+ * @return A string containing the content of the HTML page.
+ */
 class FileParser {
 
 public:
