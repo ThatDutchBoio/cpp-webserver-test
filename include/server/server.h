@@ -80,10 +80,10 @@ public:
     void Get(const std::string& Path, callback_function func);
     void ProcessRequest(sockaddr_in Source, const std::string& buffer, int client_sock);
     int GetSocketId();
-    void Use(std::string Path, Router R);
+    void Use(std::string Path, Router::Router R);
 private:
     int server_sock = -1;
     bool running = true;
     sockaddr_in serverAddr;
-    std::vector<Listener> listeners;
+    std::vector<ListenerHelper::Listener> listeners;
 };

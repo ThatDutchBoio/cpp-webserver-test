@@ -13,4 +13,6 @@
  * @param ip The IP address to bind the server to, in string format.
  * @return A sockaddr_in structure initialized with the specified port and IP address.
  */
-sockaddr_in createServerAddress(int port, const std::string& ip);
+namespace ipv4{
+    sockaddr_in createServerAddress(int port, const std::string& ip);
+}

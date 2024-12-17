@@ -4,7 +4,7 @@
 #include "./response.h"
 #include "constants.h"
 
-typedef void (*callback_function)(Request, Response);
+typedef void (*callback_function)(RequestHelper::Request, ResponseHelper::Response);
 
 /**
  * @struct Listener
@@ -20,8 +20,10 @@ typedef void (*callback_function)(Request, Response);
  * @var Listener::Path
  * The path for which the callback function is registered.
  */
-struct Listener {
-    callback_function Callback;
-    std::string Path;
-    Enums::HTTP_METHOD Method;
-};
+namespace ListenerHelper {
+    struct Listener {
+        callback_function Callback;
+        std::string Path;
+        Enums::HTTP_METHOD Method;
+    };
+}

@@ -24,13 +24,14 @@
  * @param path The file path to the HTML page.
  * @return A string containing the content of the HTML page.
  */
-class FileParser {
 
-public:
+namespace file_parser {
+    class FileParser {
+        public:
+            static std::string GetHTMLPage(const std::string& path);
+    };
 
-    static std::string GetHTMLPage(const std::string& path);
-
-};
+}
 
 
 

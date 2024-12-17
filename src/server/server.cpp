@@ -2,6 +2,10 @@
 #include "../../include/server/request.h"
 #include "../../include/server/router.h"
 #include "../../include/server/constants.h"
+using namespace ListenerHelper;
+using namespace RequestHelper;
+using namespace ResponseHelper;
+using namespace Router;
 
 /**
  * @brief Registers a callback function for a specific HTTP GET request path.
@@ -10,7 +14,7 @@
  * @param func The callback function to be invoked when a GET request is received for the specified path.
  */
 void Server::Get(const std::string& Path, callback_function func) {
-    Listener nListener;
+    ListenerHelper::Listener nListener;
     nListener.Callback = func;
     nListener.Path = Path;
     nListener.Method = Enums::HTTP_GET;
@@ -168,16 +172,19 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
     }
 }
 
+
 /**
- * @brief Registers a router's listeners to the server and clears the router's listeners.
+ * @brief Registers the routes from the given Router to the Server with the specified base path.
  * 
- * This function iterates through all listeners in the provided router and adds them to the server's list of listeners.
- * After transferring the listeners, it clears the router's list of listeners.
+ * This function iterates through all the listeners in the provided Router, 
+ * prepends the specified base path to each listener's path, and adds the 
+ * modified listeners to the server's list of listeners. After adding the 
+ * listeners to the server, it clears the listeners from the Router.
  * 
- * @param Path The base path for the router (currently unused in the function).
- * @param R The router containing listeners to be registered with the server.
+ * @param Path The base path to be prepended to each listener's path.
+ * @param R The Router containing the listeners to be registered.
  */
-void Server::Use(std::string Path, Router R){
+void Server::Use(std::string Path, Router::Router R){
     for (Listener l : R.Listeners) {
         Listener nListener;
         nListener.Callback = l.Callback;

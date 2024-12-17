@@ -51,21 +51,23 @@
  * 
  * @return The content type as a string.
  */
-class Response {
-public:
-    Response(int SocketId, int ClientSock);
-    void SetContentType(Enums::CONTENT_TYPE content_type);
-    void SetStatus(const std::string& status);
-    void SetBody(const std::string& nBody);
-    void Send();
-private:
-    std::string GetContentLength();
-    std::string GetContentType();
-    std::string HTTP_Version = "HTTP/1.1";
-    int Content_Length = 0;
-    std::string HTTP_Status;
-    int SocketId;
-    std::string body;
-    std::string Content_type;
-    int ClientSock;
-};
+namespace ResponseHelper{
+    class Response {
+        public:
+            Response(int SocketId, int ClientSock);
+            void SetContentType(Enums::CONTENT_TYPE content_type);
+            void SetStatus(const std::string& status);
+            void SetBody(const std::string& nBody);
+            void Send();
+        private:
+            std::string GetContentLength();
+            std::string GetContentType();
+            std::string HTTP_Version = "HTTP/1.1";
+            int Content_Length = 0;
+            std::string HTTP_Status;
+            int SocketId;
+            std::string body;
+            std::string Content_type;
+            int ClientSock;
+    };
+}

@@ -1,9 +1,9 @@
 #include "../../include/server/router.h"
 
-Router::Router() {}
+Router::Router::Router() {}
 
-void Router::Get(const std::string& Path, callback_function func) {
-    Listener nListener;
+void Router::Router::Get(const std::string& Path, callback_function func) {
+    ListenerHelper::Listener nListener;
     nListener.Callback = func;
     nListener.Path = Path;
     nListener.Method = Enums::HTTP_GET;

@@ -9,14 +9,14 @@
  * @param SocketId The ID of the server socket.
  * @param ClientSock The socket ID of the client connection.
  */
-Response::Response(int SocketId, int ClientSock) : SocketId(SocketId), ClientSock(ClientSock) {}
+ResponseHelper::Response::Response(int SocketId, int ClientSock) : SocketId(SocketId), ClientSock(ClientSock) {}
 
 /**
  * @brief Sets the content type of the response.
  * 
  * @param content_type The content type to be set for the response.
  */
-void Response::SetContentType(Enums::CONTENT_TYPE content_type) {
+void ResponseHelper::Response::SetContentType(Enums::CONTENT_TYPE content_type) {
     this->Content_type = content_type;
 }
 
@@ -25,7 +25,7 @@ void Response::SetContentType(Enums::CONTENT_TYPE content_type) {
  * 
  * @param status A string representing the HTTP status to be set.
  */
-void Response::SetStatus(const std::string& status) {
+void ResponseHelper::Response::SetStatus(const std::string& status) {
     this->HTTP_Status = status;
 }
 
@@ -34,7 +34,7 @@ void Response::SetStatus(const std::string& status) {
  * 
  * @param nBody The new body content to be set.
  */
-void Response::SetBody(const std::string& nBody) {
+void ResponseHelper::Response::SetBody(const std::string& nBody) {
     this->body = nBody;
     this->Content_Length = nBody.size();
 }
@@ -51,7 +51,7 @@ void Response::SetBody(const std::string& nBody) {
  *       ClientSock, GetContentLength(), and GetContentType() are properly 
  *       initialized and valid.
  */
-void Response::Send() {
+void ResponseHelper::Response::Send() {
     std::ostringstream response;
     response << HTTP_Version << " " << HTTP_Status << "\r\n";
     response << "Content-Length: " << GetContentLength() << "\r\n";
@@ -72,7 +72,7 @@ void Response::Send() {
  * 
  * @return std::string The content length of the response as a string.
  */
-std::string Response::GetContentLength() {
+std::string ResponseHelper::Response::GetContentLength() {
     return std::to_string(Content_Length);
 }
 
@@ -81,6 +81,6 @@ std::string Response::GetContentLength() {
  * 
  * @return std::string The content type of the response.
  */
-std::string Response::GetContentType() {
+std::string ResponseHelper::Response::GetContentType() {
     return Content_type;
 }
