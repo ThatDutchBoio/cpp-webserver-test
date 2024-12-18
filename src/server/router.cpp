@@ -2,6 +2,7 @@
 #include "../../include/server/listener.h"
 #include "../../include/server/static.h"
 #include "../../include/server/file_parser.h"
+#include <iostream>
 
 Router::Router::Router() {}
 
@@ -29,6 +30,7 @@ Router::Router Router::Serve_Static(serve_static::Static s){
     Router nRouter;
 
     for (serve_static::StaticFile file : s.static_files){
+        std::cout << "s.url_path: " << s.url_path << std::endl << "file.FileName: " << file.FileName << std::endl;
         nRouter.GetStatic(s.url_path + file.FileName, [](RequestHelper::Request req, ResponseHelper::Response res, serve_static::StaticFile file){
             std::string fileContents = file_parser::FileParser::GetFileContents(file.FullPath);
 

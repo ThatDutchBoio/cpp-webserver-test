@@ -167,9 +167,21 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
     for (Listener l : this->listeners) {
         std::cout << "l.path: " << l.Path << std::endl << "request Path: " << requestInfo[1][0] << std::endl;
         if (l.Path == requestInfo[1][0]) {
-           if (l.is_static) {
-                l.CallbackStatic(Req, Res, l.file);
+            std::cout << "in request, is_static?: " << l.is_static << std::endl;
+           if (l.is_static == true) {
+                std::cout << "Calling static callback" << std::endl;
+                bool isThing = l.CallbackStatic == nullptr;
+                std::cout << "is callback nil? " << std::boolalpha << isThing  << std::endl;
+                if (!isThing) {
+                     l.CallbackStatic(Req, Res, l.file);
+                }else {
+                    Res.SetBody("Couldn't fetch " + l.Path);
+                    Res.SetStatus(Enums::HTTP_NOTFOUND);
+                    Res.SetContentType(Enums::TEXT_PLAIN);
+                    Res.Send();
+                }
            }else {
+            std::cout << "Calling normal callback" << std::endl;
                 l.Callback(Req, Res);
            }
         }
@@ -191,9 +203,15 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
 void Server::Use(std::string Path, Router::Router R){
     for (Listener l : R.Listeners) {
         Listener nListener;
-        nListener.Callback = l.Callback;
-        nListener.Method = l.Method;
-        nListener.Path = Path + l.Path;
+        // nListener.Callback = l.Callback;
+        // nListener.Method = l.Method;
+        // nListener.Path = Path + l.Path;
+        // nListener.is_static = l.is_static;
+        // nListener.file = l.file;
+        // nListener
+        nListener = l;
+        std::cout << "is_static?: " << nListener.is_static << std::endl;;
+        std::cout << l.Path << std::endl;
         this->listeners.push_back(nListener);
     }
     R.Listeners.clear();

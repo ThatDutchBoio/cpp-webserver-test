@@ -25,10 +25,9 @@ int main()
 {
     signal(SIGABRT, handle_signal);
     serverlib::Static s("/", "./public");
-    s.AddFile("test", Enums::TEXT_PLAIN);
+    // s.AddFile("script.js", Enums::TEXT_PLAIN);
 
-    // serverlib::Router static_router = serverlib::Serve_Static(s);
-    // App.Use(s.url_path, static_router);
+    
 
     App.Get("/", [](serverlib::Request Req, serverlib::Response Res){
         std::cout << "app.get('/'')" << std::endl;
@@ -45,7 +44,8 @@ int main()
         Res.SetBody("<h1>testing path lol lmao pls work</h1>");
         Res.Send();
     });
-
+    serverlib::Router static_router = serverlib::Serve_Static(s);
+    App.Use(s.url_path, static_router);
     serverlib::Router TestRouter = TestingApi::GetRouter();
 
     App.Use("/testing", TestRouter);

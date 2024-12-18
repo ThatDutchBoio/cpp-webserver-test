@@ -13,9 +13,9 @@ serve_static::Static::Static(std::string url_path, std::string folder_path){
     this->url_path = url_path;
     this->folder_path = folder_path;
     for (const auto & entry : fs::directory_iterator(folder_path)){
-
-        this->AddFile(entry.path().filename(),Enums::TEXT_PLAIN);
-    
+        std::cout << entry.path() << std::endl;
+        std::cout << entry.path().filename() << std::endl;
+        this->AddFileFullPath(entry.path().filename(), entry.path(), Enums::TEXT_PLAIN);    
     }
 }
 
@@ -34,31 +34,3 @@ void serve_static::Static::AddFile(std::string FileName, Enums::CONTENT_TYPE Con
     std::cout << "nFile.FileName " << nFile.FileName << std::endl;
     this->static_files.push_back(nFile);
 }
-
-// Router::Router serve_static::Serve_Static(Static s){
-//     Router::Router nRouter;
-//     for (StaticFile file : s.static_files) {
-//         // nRouter.GetStatic(file.FileName, [&](RequestHelper::Request req, ResponseHelper::Response res){
-//         //     std::cout << sFile.ContentType << std::endl;
-//         //     std::cout << "Static Path: /" << sFile.FileName << " Called!" << std::endl;
-//         //     std::cout << "Getting file: " << s.folder_path + "/" + file.FileName << std::endl;
-//         //     std::string FileContents;
-//         //     if (sFile.FullPath == ""){
-//         //         FileContents = file_parser::FileParser::GetFileContents(s.folder_path + "/" + sFile.FileName);
-//         //     }else {
-//         //         FileContents = file_parser::FileParser::GetFileContents(sFile.FullPath);
-//         //     }
-            
-//         //     std::cout << "FileContents: " << FileContents << std::endl;
-//         //     res.SetContentType(file.ContentType);
-//         //     res.SetBody(FileContents);
-//         //     res.SetStatus(Enums::HTTP_OK);
-//         //     res.Send();
-//         // }, file);
-//         nRouter.GetStatic(file.FileName, [&](RequestHelper::Request req, ResponseHelper::Response res){
-
-//         });
-//     }
-//     return nRouter;
-
-// }

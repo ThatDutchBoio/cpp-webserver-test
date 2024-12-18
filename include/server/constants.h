@@ -38,13 +38,14 @@ namespace Enums {
      * @var HTTP_OK
      * @brief Constant for the "200 OK" HTTP status code.
      */
-    typedef char HTTP_STATUS[8];
+    typedef char HTTP_STATUS[14];
 
     const CONTENT_TYPE TEXT_PLAIN = "text/plain";
     const CONTENT_TYPE TEXT_HTML = "text/html";
     const CONTENT_TYPE TEXT_JSON = "application/json";
 
     const HTTP_STATUS HTTP_OK = "200 OK";
+    const HTTP_STATUS HTTP_NOTFOUND = "404 Not Found";
 
     typedef int HTTP_METHOD;
 
