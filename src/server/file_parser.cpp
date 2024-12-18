@@ -1,6 +1,7 @@
 #include "../../include/server/file_parser.h"
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 
 std::string file_parser::FileParser::GetHTMLPage(const std::string& path) {
     std::ifstream file(path);
@@ -43,8 +44,5 @@ std::string file_parser::FileParser::GetFileContents(const std::string& path) {
  * @return false If the filename does not end with the specified extension.
  */
 bool file_parser::FileParser::IsFileOfType(std::string filename, std::string extension){
-    if (filename.length() >= extension.length()) {
-        return filename.compare(filename.length() - extension.length(), extension.length(), extension) == 0;
-    }
-    return false;
+    return std::filesystem::path(filename).extension() == extension;
 }
