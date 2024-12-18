@@ -6,6 +6,7 @@ using namespace ListenerHelper;
 using namespace RequestHelper;
 using namespace ResponseHelper;
 using namespace Router;
+#include <chrono>
 
 /**
  * @brief Registers a callback function for a specific HTTP GET request path.
@@ -151,6 +152,11 @@ void Server::Start() {
  * @param client_sock The socket file descriptor for the client connection.
  */
 void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffer, int client_sock) {
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+    auto t1 = high_resolution_clock::now();
     RequestHelper::requestInfo Parsed = RequestHelper::ParseRequest(buffer);
     RequestHelper::requestInfo requestInfo = RequestHelper::ParseRequestType(Parsed[0][0]);
 
@@ -186,6 +192,11 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
            }
         }
     }
+    auto t2 = high_resolution_clock::now();
+
+    /* Getting number of milliseconds as a double. */
+    duration<double, std::milli> ms_double = t2 - t1;
+    std::cout << "Time Until request processed: " << ms_double.count() << "ms" << std::endl;
 }
 
 
