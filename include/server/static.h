@@ -3,6 +3,7 @@
 #include <string>
 #include "constants.h"
 // #include "router.h"
+#include <vector>
 
 namespace serve_static {
     struct StaticFile {
@@ -21,8 +22,7 @@ namespace serve_static {
         std::string folder_path;
         std::vector<StaticFile> static_files;
 
-        Static(std::string url_path, std::string folder_path)
-            : url_path(url_path), folder_path(folder_path) {}
+        Static(std::string url_path, std::string folder_path);
 
         void AddFile(std::string FileName, Enums::CONTENT_TYPE ContentType);
         void AddFileFullPath(std::string fileName, std::string FullPath, Enums::CONTENT_TYPE ContentType);

@@ -1,4 +1,3 @@
-#pragma once
 #include "../../include/server/static.h"
 #include "../../include/server/file_parser.h"
 #include "../../include/server/request.h"
@@ -6,6 +5,7 @@
 // using namespace serve_static;
 #include <filesystem>
 #include <iostream>
+#include <vector>
 namespace fs = std::filesystem;
 
 

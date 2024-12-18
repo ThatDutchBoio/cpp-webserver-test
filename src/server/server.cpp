@@ -167,7 +167,11 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
     for (Listener l : this->listeners) {
         std::cout << "l.path: " << l.Path << std::endl << "request Path: " << requestInfo[1][0] << std::endl;
         if (l.Path == requestInfo[1][0]) {
-            l.Callback(Req, Res);
+           if (l.is_static) {
+                l.CallbackStatic(Req, Res, l.file);
+           }else {
+                l.Callback(Req, Res);
+           }
         }
     }
 }

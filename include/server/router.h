@@ -10,8 +10,8 @@ namespace Router{
         Router();
         std::vector<ListenerHelper::Listener> Listeners;
         void Get(const std::string& Path, ListenerHelper::callback_function func);
-        void GetStatic(const std::string& Path, ListenerHelper::callback_function_static func); 
-        Router Serve_Static(serve_static::Static);
+        void GetStatic(const std::string& Path, ListenerHelper::callback_function_static func, serve_static::StaticFile); 
+       
     };
-
+    Router Serve_Static(serve_static::Static);
 }

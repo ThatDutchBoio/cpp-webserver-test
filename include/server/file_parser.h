@@ -29,6 +29,7 @@ namespace file_parser {
     class FileParser {
         public:
             static std::string GetHTMLPage(const std::string& path);
+            static std::string GetFileContents(const std::string& path);
     };
 
 }

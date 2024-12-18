@@ -7,6 +7,7 @@
 #include "../../include/server/router.h"
 #include "../../include/server/server.h"
 #include "../../include/server/string_utils.h"
+#include "../../include/server/static.h"
 
 namespace serverlib {
     // namespace Enums = Enums;
@@ -25,6 +26,6 @@ namespace serverlib {
     using namespace ResponseHelper;
     using namespace StringUtils;
     using namespace file_parser;
-    
+    using namespace serve_static;
 
 }
