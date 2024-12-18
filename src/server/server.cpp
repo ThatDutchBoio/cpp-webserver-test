@@ -55,9 +55,6 @@ Server::~Server() {
  */
 void Server::Stop() {
     std::cout << "Terminating server" << std::endl;
-    for (int i = 0; i <= 3; i++) {
-        close(i);
-    }
     this->running = false;
     if (server_sock >= 0) {
         close(server_sock);
@@ -199,7 +196,6 @@ void Server::ProcessRequest(sockaddr_in& CLIENT_ADDRESS, const std::string& buff
     std::cout << "Time Until request processed: " << ms_double.count() << "ms" << std::endl;
 }
 
-
 /**
  * @brief Registers the routes from the given Router to the Server with the specified base path.
  * 
@@ -215,12 +211,6 @@ void Server::Use(std::string Path, Router::Router& R){
     std::cout << "static router memaddr: " << &R << std::endl;
     for (Listener l : R.Listeners) {
         Listener nListener;
-        // nListener.Callback = l.Callback;
-        // nListener.Method = l.Method;
-        // nListener.Path = Path + l.Path;
-        // nListener.is_static = l.is_static;
-        // nListener.file = l.file;
-        // nListener
         nListener = l;
         std::cout << "is_static?: " << nListener.is_static << std::endl;;
         std::cout << l.Path << std::endl;
