@@ -77,7 +77,7 @@ public:
     void Stop();
     void HandleSignal(int signal);
     void HandleClient(int client_sock);
-    void Get(const std::string& Path, callback_function func);
+    void Get(const std::string& Path, ListenerHelper::callback_function func);
     void ProcessRequest(sockaddr_in Source, const std::string& buffer, int client_sock);
     int GetSocketId();
     void Use(std::string Path, Router::Router R);
