@@ -78,9 +78,9 @@ public:
     void HandleSignal(int signal);
     void HandleClient(int client_sock);
     void Get(const std::string& Path, ListenerHelper::callback_function func);
-    void ProcessRequest(sockaddr_in Source, const std::string& buffer, int client_sock);
+    void ProcessRequest(sockaddr_in&, const std::string&, int&);
     int GetSocketId();
-    void Use(std::string Path, Router::Router R);
+    void Use(std::string , Router::Router& R);
 private:
     int server_sock = -1;
     bool running = true;

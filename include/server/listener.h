@@ -13,8 +13,8 @@
 
 namespace ListenerHelper {
     
-    typedef void (*callback_function)(RequestHelper::Request, ResponseHelper::Response);
-    typedef std::function<void(RequestHelper::Request, ResponseHelper::Response, serve_static::StaticFile)> callback_function_static;
+    typedef void (*callback_function)(RequestHelper::Request&, ResponseHelper::Response&);
+    typedef std::function<void(RequestHelper::Request&, ResponseHelper::Response&, serve_static::StaticFile&)> callback_function_static;
     struct Listener {
         bool is_static;
         callback_function Callback;

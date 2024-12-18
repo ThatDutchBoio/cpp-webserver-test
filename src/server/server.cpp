@@ -151,7 +151,7 @@ void Server::Start() {
  * @param buffer The raw request data received from the client.
  * @param client_sock The socket file descriptor for the client connection.
  */
-void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffer, int client_sock) {
+void Server::ProcessRequest(sockaddr_in& CLIENT_ADDRESS, const std::string& buffer, int& client_sock) {
     using std::chrono::high_resolution_clock;
     using std::chrono::duration_cast;
     using std::chrono::duration;
@@ -211,7 +211,8 @@ void Server::ProcessRequest(sockaddr_in CLIENT_ADDRESS, const std::string& buffe
  * @param Path The base path to be prepended to each listener's path.
  * @param R The Router containing the listeners to be registered.
  */
-void Server::Use(std::string Path, Router::Router R){
+void Server::Use(std::string Path, Router::Router& R){
+    std::cout << "static router memaddr: " << &R << std::endl;
     for (Listener l : R.Listeners) {
         Listener nListener;
         // nListener.Callback = l.Callback;

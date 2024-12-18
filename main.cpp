@@ -27,7 +27,7 @@ int main()
     signal(SIGABRT, handle_signal);
     serverlib::Static s("/", "./public");
 
-    App.Get("/", [](serverlib::Request Req, serverlib::Response Res){
+    App.Get("/", [](serverlib::Request& Req, serverlib::Response& Res){
         std::cout << "app.get('/'')" << std::endl;
 
         Res.SetStatus(serverlib::HTTP_OK);
@@ -36,14 +36,15 @@ int main()
         Res.Send();
     });
 
-    App.Get("/testing", [](serverlib::Request Req, serverlib::Response Res) {
+    App.Get("/testing", [](serverlib::Request& Req, serverlib::Response& Res) {
         Res.SetStatus(Enums::HTTP_OK);
         Res.SetContentType(Enums::TEXT_HTML);
         Res.SetBody("<h1>testing path lol lmao pls work</h1>");
         Res.Send();
     });
     serverlib::Router static_router = serverlib::Serve_Static(s);
-    App.Use(s.url_path, static_router);
+    std::cout << "static router memaddr: " << &static_router << std::endl;
+    App.Use("/", static_router);
     serverlib::Router TestRouter = TestingApi::GetRouter();
 
     App.Use("/testing", TestRouter);
@@ -55,5 +56,6 @@ int main()
     duration<double, std::milli> ms_double = t2 - t1;
     std::cout << "Server intitialisation took: " << ms_int.count() << "ms" << std::endl;
     std::cout << "Server intitialisation took: " << ms_double.count() << "ms" << std::endl;
+    return 0;
     App.Start();
 }
