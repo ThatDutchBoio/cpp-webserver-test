@@ -5,11 +5,6 @@
 #include <unistd.h>
 #include <csignal>
 #include <vector>
-// #include "include/server/server.h"
-// #include "include/server/ipv4.h"
-// #include "include/server/file_parser.h"
-// #include "include/server/router.h"
-// #include "include/server/constants.h"
 #include "src/api/testing.cpp"
 #include "src/server/server_lib.cpp"
 
@@ -25,9 +20,6 @@ int main()
 {
     signal(SIGABRT, handle_signal);
     serverlib::Static s("/", "./public");
-    // s.AddFile("script.js", Enums::TEXT_PLAIN);
-
-    
 
     App.Get("/", [](serverlib::Request Req, serverlib::Response Res){
         std::cout << "app.get('/'')" << std::endl;

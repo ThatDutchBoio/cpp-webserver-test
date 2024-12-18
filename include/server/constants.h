@@ -43,6 +43,7 @@ namespace Enums {
     const CONTENT_TYPE TEXT_PLAIN = "text/plain";
     const CONTENT_TYPE TEXT_HTML = "text/html";
     const CONTENT_TYPE TEXT_JSON = "application/json";
+    const CONTENT_TYPE TEXT_CSS = "text/css";
 
     const HTTP_STATUS HTTP_OK = "200 OK";
     const HTTP_STATUS HTTP_NOTFOUND = "404 Not Found";

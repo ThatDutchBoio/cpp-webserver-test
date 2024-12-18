@@ -30,6 +30,7 @@ namespace file_parser {
         public:
             static std::string GetHTMLPage(const std::string& path);
             static std::string GetFileContents(const std::string& path);
+            static bool IsFileOfType(std::string filename, std::string extension);
     };
 
 }

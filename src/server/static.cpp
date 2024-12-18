@@ -15,7 +15,17 @@ serve_static::Static::Static(std::string url_path, std::string folder_path){
     for (const auto & entry : fs::directory_iterator(folder_path)){
         std::cout << entry.path() << std::endl;
         std::cout << entry.path().filename() << std::endl;
-        this->AddFileFullPath(entry.path().filename(), entry.path(), Enums::TEXT_PLAIN);    
+        Enums::CONTENT_TYPE FileType = Enums::TEXT_PLAIN;
+        if (file_parser::FileParser::IsFileOfType(entry.path().filename(), ".css")){
+            FileType = Enums::TEXT_CSS;
+        }
+        if (file_parser::FileParser::IsFileOfType(entry.path().filename(), ".html")){
+            FileType = Enums::TEXT_HTML;
+        }
+        if (file_parser::FileParser::IsFileOfType(entry.path().filename(), "json")){
+            FileType = Enums::TEXT_JSON;
+        }
+        this->AddFileFullPath(entry.path().filename(), entry.path(), FileType);    
     }
 }
 

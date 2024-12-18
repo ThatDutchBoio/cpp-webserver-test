@@ -21,3 +21,10 @@ std::string file_parser::FileParser::GetFileContents(const std::string& path) {
     buffer << file.rdbuf();
     return buffer.str();
 }
+
+bool file_parser::FileParser::IsFileOfType(std::string filename, std::string extension){
+    if (filename.length() >= extension.length()) {
+        return filename.compare(filename.length() - extension.length(), extension.length(), extension) == 0;
+    }
+    return false;
+}

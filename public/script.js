@@ -1,3 +1,3 @@
-window.onload = () => {
-    console.log('hi');
+window.onload =  ( ) => {
+    window.alert("Javascript loaded!")
 }
