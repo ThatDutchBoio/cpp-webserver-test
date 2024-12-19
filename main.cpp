@@ -36,6 +36,15 @@ int main()
         Res.Send();
     });
 
+
+    App.Post("/post", [](serverlib::Request& Req, serverlib::Response& Res){
+
+        Res.SetStatus(serverlib::HTTP_OK);
+        Res.SetContentType(serverlib::TEXT_JSON);
+        Res.SetBody("{'response': 'Succes'}");
+        Res.Send();
+    });
+
     App.Get("/testing", [](serverlib::Request& Req, serverlib::Response& Res) {
         Res.SetStatus(Enums::HTTP_OK);
         Res.SetContentType(Enums::TEXT_HTML);
@@ -56,6 +65,5 @@ int main()
     duration<double, std::milli> ms_double = t2 - t1;
     std::cout << "Server intitialisation took: " << ms_int.count() << "ms" << std::endl;
     std::cout << "Server intitialisation took: " << ms_double.count() << "ms" << std::endl;
-    return 0;
     App.Start();
 }

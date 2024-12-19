@@ -22,6 +22,22 @@ void Server::Get(const std::string& Path, callback_function func) {
     this->listeners.push_back(nListener);
 }
 
+
+/**
+ * @brief Registers a callback function for a specific HTTP POST request path.
+ * 
+ * @param Path The URL path to listen for POST requests.
+ * @param func The callback function to be invoked when a POST request is received for the specified path.
+ */
+void Server::Post(const std::string& Path, callback_function func) {
+    ListenerHelper::Listener nListener;
+    nListener.Callback = func;
+    nListener.Path = Path;
+    nListener.Method = Enums::HTTP_POST;
+    this->listeners.push_back(nListener);
+}
+
+
 /**
  * @brief Constructs a new Server object with the specified server address.
  * 

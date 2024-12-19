@@ -22,6 +22,23 @@ void Router::Router::Get(const std::string& Path, ListenerHelper::callback_funct
 }
 
 /**
+ * @brief Registers a POST route with the specified path and callback function.
+ * 
+ * @param Path The URL path for the GET route.
+ * @param func The callback function to be executed when the route is accessed.
+ */
+
+void Router::Router::Post(const std::string& Path, ListenerHelper::callback_function func) {
+    ListenerHelper::Listener nListener;
+    nListener.Callback = func;
+    nListener.Path = Path;
+    nListener.Method = Enums::HTTP_POST;
+    nListener.is_static = false;
+    this->Listeners.push_back(nListener);
+}
+
+
+/**
  * @brief Registers a static file handler for HTTP GET requests.
  *
  * This function registers a new listener that serves static files when an HTTP GET request
