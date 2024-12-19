@@ -1,5 +1,11 @@
 # Project Documentation
 
+## TBD
+
+- [ ] Support for other request types
+- [ ] Support for sending/requesting image files
+- [ ] Implement more request headers (Security headers, etc.)
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Project Structure](#project-structure)
