@@ -62,11 +62,7 @@ src/
         router.cpp
         server_lib.cpp
         server.cpp
-tests/
-    test_file_parser.cpp
-    test_ipv4.cpp
-    test_string_utils.cpp
-CMakeLists.txt
+
 ```
 
 ### Classes and Functions
